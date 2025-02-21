@@ -1,65 +1,113 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+
 export default function Home() {
+  const messages = [
+    'Connecting to server...',
+    'Checking system status...',
+    'Running background process...',
+    'Preventing sleep mode...',
+    'Loading AI model...',
+    'Sending request...',
+    'Process completed!',
+  ];
+
+  const [terminalText, setTerminalText] = useState<string>('');
+  const [index, setIndex] = useState(0);
+  const [password, setPassword] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const correctPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD;
+
+  const handleLogin = () => {
+    if (password === correctPassword) {
+      setIsAuthenticated(true);
+    } else {
+      alert('Incorrect password!');
+    }
+  };
+
+  useEffect(() => {
+    if (index < messages.length) {
+      let i = 0;
+      const interval = setInterval(() => {
+        setTerminalText((prev) => prev + messages[index][i]);
+        i++;
+        if (i >= messages[index].length) {
+          clearInterval(interval);
+          setTimeout(() => {
+            setTerminalText((prev) => prev + '\n');
+            setIndex((prev) => prev + 1);
+          }, 500);
+        }
+      }, 50);
+    }
+  }, [index]);
+
+  useEffect(() => {
+    const preventSleep = () => {
+      return setInterval(() => {
+        const event = new MouseEvent('mousemove', {
+          bubbles: true,
+          cancelable: true,
+          view: window,
+        });
+        document.dispatchEvent(event);
+        console.log('Preventing sleep...');
+      }, 50000);
+    };
+
+    const intervalId = preventSleep();
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  if (!isAuthenticated) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100vh',
+          backgroundColor: 'black',
+          color: 'white',
+          fontFamily: 'monospace',
+        }}
+      >
+        <h2>Enter Password</h2>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          style={{
+            padding: '10px',
+            fontSize: '16px',
+            margin: '10px',
+          }}
+        />
+        <button
+          onClick={handleLogin}
+          style={{ padding: '10px 20px', fontSize: '16px' }}
+        >
+          Login
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div
-      className={`grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]`}
+      style={{
+        backgroundColor: 'black',
+        color: 'limegreen',
+        fontFamily: 'monospace',
+        padding: '20px',
+        minHeight: '100vh',
+      }}
     >
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{' '}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/pages/index.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Go to nextjs.org →
-        </a>
-      </footer>
+      <pre>{terminalText}</pre>
     </div>
   );
 }
