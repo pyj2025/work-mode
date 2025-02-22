@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const messages = [
+const initialMessages = [
   'Connecting to server...',
   'Checking system status...',
   'Running background process...',
@@ -10,26 +10,59 @@ const messages = [
   'Process completed!',
 ];
 
+const randomLogs = [
+  'GET 200 /api/data',
+  'POST 201 /auth/login',
+  'PUT 204 /user/settings',
+  'DELETE 200 /user/account',
+  'Compiled in 81ms (301 modules)',
+  'Hot reload complete in 32ms',
+  'Warning: Deprecated API used',
+  'Error: Connection timeout... Retrying',
+];
+
+const getRandomLog = () => {
+  return randomLogs[Math.floor(Math.random() * randomLogs.length)];
+};
+
 const Main = () => {
-  const [terminalText, setTerminalText] = useState<string>('');
+  const [terminalText, setTerminalText] = useState('');
   const [index, setIndex] = useState(0);
+  const [charIndex, setCharIndex] = useState(0);
+  const [cursorVisible, setCursorVisible] = useState(true);
+  const [isLooping, setIsLooping] = useState(false);
 
   useEffect(() => {
-    if (index < messages.length) {
-      let i = 0;
-      const interval = setInterval(() => {
-        setTerminalText((prev) => prev + messages[index][i]);
-        i++;
-        if (i >= messages[index].length) {
-          clearInterval(interval);
-          setTimeout(() => {
-            setTerminalText((prev) => prev + '\n');
-            setIndex((prev) => prev + 1);
-          }, 500);
-        }
-      }, 50);
+    if (!isLooping && index < initialMessages.length) {
+      if (charIndex < initialMessages[index].length) {
+        const timeout = setTimeout(() => {
+          setTerminalText((prev) => prev + initialMessages[index][charIndex]);
+          setCharIndex((prev) => prev + 1);
+        }, 50);
+        return () => clearTimeout(timeout);
+      } else {
+        const lineBreakTimeout = setTimeout(() => {
+          setTerminalText((prev) => prev + '\n');
+          setIndex((prev) => prev + 1);
+          setCharIndex(0);
+        }, 500);
+        return () => clearTimeout(lineBreakTimeout);
+      }
+    } else {
+      setIsLooping(true);
+      const loopInterval = setInterval(() => {
+        setTerminalText((prev) => prev + getRandomLog() + '\n');
+      }, Math.random() * 5000 + 1000);
+      return () => clearInterval(loopInterval);
     }
-  }, [index]);
+  }, [index, charIndex, isLooping]);
+
+  useEffect(() => {
+    const cursorInterval = setInterval(() => {
+      setCursorVisible((prev) => !prev);
+    }, 500);
+    return () => clearInterval(cursorInterval);
+  }, []);
 
   useEffect(() => {
     const preventSleep = () => {
@@ -43,9 +76,7 @@ const Main = () => {
         console.log('Preventing sleep...');
       }, 50000);
     };
-
     const intervalId = preventSleep();
-
     return () => clearInterval(intervalId);
   }, []);
 
@@ -59,7 +90,10 @@ const Main = () => {
         minHeight: '100vh',
       }}
     >
-      <pre>{terminalText}</pre>
+      <pre>
+        {terminalText}
+        {cursorVisible ? '_' : ' '}
+      </pre>
     </div>
   );
 };
