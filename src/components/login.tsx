@@ -13,9 +13,12 @@ const Login = ({ setAuthenticated }: LoginProps) => {
 
   const handleLogin = () => {
     if (password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD) {
+      localStorage.setItem('isAuthenticated', 'true');
       setAuthenticated(true);
     } else {
-      alert('Incorrect password!');
+      alert(
+        'Incorrect password! If you forgot the password, please contact joon 😊'
+      );
     }
   };
 
@@ -27,7 +30,7 @@ const Login = ({ setAuthenticated }: LoginProps) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black flex items-center justify-center p-4">
-      <Card className="w-full max-w-md bg-gray-800 border-gray-700">
+      <Card className="w-full max-w-md bg-gray-800 border-gray-700 relative">
         <CardHeader className="space-y-1">
           <div className="flex items-center justify-center mb-4">
             <FaLock className="h-12 w-12 text-blue-500" />
@@ -54,6 +57,9 @@ const Login = ({ setAuthenticated }: LoginProps) => {
             Login
           </Button>
         </CardContent>
+        <div className="text-center text-gray-500 text-xs pb-4">
+          Designed & Developed by Joon
+        </div>
       </Card>
     </div>
   );
