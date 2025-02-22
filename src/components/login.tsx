@@ -9,7 +9,7 @@ interface LoginProps {
 }
 
 const Login = ({ setAuthenticated }: LoginProps) => {
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState<string>('');
 
   const handleLogin = () => {
     if (password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD) {
