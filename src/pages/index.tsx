@@ -1,5 +1,6 @@
 'use client';
 
+import Login from '@/components/login';
 import { useEffect, useState } from 'react';
 
 export default function Home() {
@@ -63,38 +64,7 @@ export default function Home() {
   }, []);
 
   if (!isAuthenticated) {
-    return (
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100vh',
-          backgroundColor: 'black',
-          color: 'white',
-          fontFamily: 'monospace',
-        }}
-      >
-        <h2>Enter Password</h2>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={{
-            padding: '10px',
-            fontSize: '16px',
-            margin: '10px',
-          }}
-        />
-        <button
-          onClick={handleLogin}
-          style={{ padding: '10px 20px', fontSize: '16px' }}
-        >
-          Login
-        </button>
-      </div>
-    );
+    return <Login setAuthenticated={setIsAuthenticated} />;
   }
 
   return (
