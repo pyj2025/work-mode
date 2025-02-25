@@ -1,4 +1,3 @@
-// src/constants/terminal.ts
 import { StatusCodes, ApiPaths } from '../types/terminal';
 
 export const statusCodes: StatusCodes = {
@@ -61,4 +60,5 @@ export const initialMessages: string[] = [
   'Validating environment variables...',
   'Starting development server...',
   'Process completed successfully!',
+  'IMPORTANT: Please keep this browser tab in focus for optimal performance.',
 ];

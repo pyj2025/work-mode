@@ -89,10 +89,12 @@ const Main = () => {
         const newLog = generateRandomLog();
         setTerminalText((prev) => {
           const lines = prev.split('\n');
+
           if (lines.length > 100) {
-            return lines.slice(-100).join('\n') + '\n' + newLog + '\n';
+            return lines.slice(-100).join('\n') + '\n' + newLog;
           }
-          return prev + newLog + '\n';
+
+          return prev + '\n' + newLog;
         });
       }, Math.random() * 2000 + 500);
       return () => clearInterval(loopInterval);
