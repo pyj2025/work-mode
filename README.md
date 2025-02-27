@@ -1,5 +1,10 @@
 # WorkMode
 
+
+[screen-capture (4).webm](https://github.com/user-attachments/assets/7d9f13a9-7b4e-4048-95c9-0b58144e5349)
+
+
+
 ## Overview
 
 WorkMode is a specialized web application designed to prevent your machine from entering sleep mode while the browser tab remains in focus. This tool is particularly useful for developers who need to keep their machines active during long-running processes without manual intervention.
