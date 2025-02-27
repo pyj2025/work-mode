@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FaLock } from 'react-icons/fa';
+import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -32,8 +32,14 @@ const Login = ({ setAuthenticated }: LoginProps) => {
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black flex items-center justify-center p-4">
       <Card className="w-full max-w-md bg-gray-800 border-gray-700 relative">
         <CardHeader className="space-y-1">
-          <div className="flex items-center justify-center mb-4">
-            <FaLock className="h-12 w-12 text-blue-500" />
+          <div className="flex items-center justify-center">
+            <Image
+              src="/images/logo.svg"
+              alt="WorkMode Logo"
+              width={32}
+              height={32}
+              className="h-16 w-16"
+            />
           </div>
           <CardTitle className="text-2xl text-center font-bold text-white">
             Admin Login
