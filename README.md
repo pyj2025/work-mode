@@ -21,7 +21,7 @@ Similar to the terminal command `caffeinate -d` on macOS, WorkMode serves as a b
 ## Usage
 
 1. Open the WorkMode web application
-2. Log in using the password provided by Joon
+2. Log in using the admin password provided by Joon
 3. Once the command is initiated, resize the browser window to your preferred dimensions and keep it in focus
 4. Continue with your work without worrying about your machine going to sleep
 
